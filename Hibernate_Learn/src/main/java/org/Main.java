@@ -6,12 +6,12 @@ import org.hibernate.SessionFactory;
 public class Main {
     public static void main(String [] args ) {
         Students s1 = new Students();
-        s1.setRoll(11);
-        s1.setName("Deba Pal");
-        s1.setScore(66);
+        s1.setRoll(12);
+        s1.setName("Ritankar Pal");
+        s1.setScore(100);
 
 
-        Students s2 = null;
+
 
 //        Configuration cfg = new Configuration();
 //        cfg.addAnnotatedClass(org.Students.class);
@@ -24,17 +24,16 @@ public class Main {
                 .configure()
                 .buildSessionFactory();
 
-
-
         Session session = sf.openSession();
-       s2 = session.get(Students.class, 3);
-//        Transaction tr = session.beginTransaction(); r  // required only when we do transaction
-        session.persist(s1);
-//        tr.commit();   //since transaction is commented it is also the same
-        System.out.println(s2);
+        Transaction tn = session.beginTransaction();
+
+
+          session.remove(s1);
+//        session.merge(s1);
+        tn.commit();
         sf.close();
 
         session.close();
-
+     System.out.println(s1);
     }
 }
