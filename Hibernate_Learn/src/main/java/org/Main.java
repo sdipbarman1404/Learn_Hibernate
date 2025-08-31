@@ -3,38 +3,56 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class Main {
-    public static void main(String [] args ) {
-        Students s1 = new Students();
-        s1.setRoll(11);
-        s1.setName("Deba Pal");
-        s1.setScore(66);
+    public static  void main(String [] args ) {
+
+        Laptop l1 = new Laptop();
+                l1.setL_id(101);
+                l1.setBrand("Asus");
+                l1.setModel("Rog");
+                l1.setRam(16);
 
 
-        Students s2 = null;
+        Laptop l2 = new Laptop();
+        l2.setL_id(105);
+        l2.setBrand("Dell");
+        l2.setModel("Inspiror");
+        l2.setRam(16);
 
-//        Configuration cfg = new Configuration();
-//        cfg.addAnnotatedClass(org.Students.class);
-//        cfg.configure();
-//        SessionFactory  sf = cfg.buildSessionFactory();
-        // below code is the segregated way
+        Developer d1 = new Developer();
+        d1.setId(01);
+        d1.setName("Ritankar Pal");
+        d1.setTech("Java");
+        d1.setLaptop(Arrays.asList(l1,l2));
+
+        l1.setDeveloper(d1);
+        l2.setDeveloper(d1);
 
         SessionFactory  sf = new Configuration()
-                .addAnnotatedClass(org.Students.class)
+                .addAnnotatedClass(org.Developer.class)
+                .addAnnotatedClass(org.Laptop.class)
                 .configure()
                 .buildSessionFactory();
 
-
-
         Session session = sf.openSession();
-       s2 = session.get(Students.class, 3);
-//        Transaction tr = session.beginTransaction(); r  // required only when we do transaction
-        session.persist(s1);
-//        tr.commit();   //since transaction is commented it is also the same
-        System.out.println(s2);
+        Transaction tn = session.beginTransaction();
+
+
+//          session.remove(s1);
+//        session.merge(s1);
+        session.persist(d1);
+        session.persist(l1);
+        session.persist(l2);
+        tn.commit();
+        Developer d2 = session.get(Developer.class,1);
+        System.out.println(d2);
         sf.close();
 
         session.close();
-
+     System.out.println(d1);
     }
 }
