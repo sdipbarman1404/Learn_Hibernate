@@ -3,7 +3,8 @@ package org;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
-@Entity
+@Entity()
+
 public class Students {
    @Id
     private int roll;
